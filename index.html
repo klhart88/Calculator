@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Down Payment Calculator | SmartIQ by Hart</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red:      #c41e1e;
+      --red-dark: #9e1717;
+      --ink:      #111111;
+      --ink-mid:  #3d3d3d;
+      --ink-soft: #6b6b6b;
+      --rule:     #e2e2e2;
+      --cream:    #f9f8f5;
+      --white:    #ffffff;
+      --red-lt:   #fdf0f0;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    nav {
+      background: var(--ink);
+      border-bottom: 3px solid var(--red);
+      padding: 0 1.5rem;
+    }
+    .nav-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-brand {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .nav-sub {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--red);
+    }
+
+    /* HERO IMAGE BANNER */
+    .hero-img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      object-position: center 60%;
+      display: block;
+      filter: brightness(0.78);
+    }
+
+    /* MAIN */
+    main {
+      flex: 1;
+      max-width: 620px;
+      width: 100%;
+      margin: -3rem auto 3rem;
+      padding: 0 1.25rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: 10px;
+      border-top: 4px solid var(--red);
+      box-shadow: 0 4px 28px rgba(0,0,0,0.11);
+      padding: 2.25rem 2rem;
+    }
+
+    .card-eyebrow {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 0.4rem;
+    }
+    .card h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.65rem;
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+    }
+    .card .subtitle {
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: var(--ink-soft);
+      line-height: 1.65;
+      margin-bottom: 2rem;
+    }
+
+    /* INPUTS */
+    .field {
+      margin-bottom: 1.4rem;
+    }
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      margin-bottom: 0.45rem;
+    }
+    input[type="text"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--ink);
+      background: var(--cream);
+      border: 1.5px solid var(--rule);
+      border-radius: 6px;
+      outline: none;
+      transition: border-color 0.2s;
+      appearance: none;
+    }
+    input:focus, select:focus { border-color: var(--red); background: var(--white); }
+
+    /* Percentage presets */
+    .pct-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.6rem;
+    }
+    .pill {
+      padding: 0.3rem 0.85rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      border: 1.5px solid var(--rule);
+      border-radius: 20px;
+      cursor: pointer;
+      background: var(--white);
+      color: var(--ink-mid);
+      transition: all 0.15s;
+      user-select: none;
+    }
+    .pill:hover, .pill.active {
+      border-color: var(--red);
+      background: var(--red);
+      color: var(--white);
+    }
+
+    /* CALCULATE BUTTON */
+    .btn-calc {
+      width: 100%;
+      padding: 0.9rem;
+      background: var(--red);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 0.5rem;
+    }
+    .btn-calc:hover { background: var(--red-dark); }
+
+    /* RESULT */
+    .result {
+      display: none;
+      margin-top: 1.75rem;
+      background: var(--ink);
+      border-radius: 8px;
+      padding: 1.75rem;
+      color: var(--white);
+    }
+    .result.show { display: block; }
+    .result-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 0.3rem;
+    }
+    .result-amount {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 1.25rem;
+    }
+    .result-rows {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .result-row {
+      background: rgba(255,255,255,0.07);
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+    }
+    .result-row .r-label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 0.2rem;
+    }
+    .result-row .r-value {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--white);
+    }
+    .result-note {
+      margin-top: 1.1rem;
+      font-size: 0.78rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.6;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--ink);
+      border-top: 3px solid var(--red);
+      color: rgba(255,255,255,0.45);
+      font-size: 0.75rem;
+      font-weight: 300;
+      text-align: center;
+      padding: 1.25rem;
+      line-height: 1.6;
+    }
+    footer a { color: rgba(255,255,255,0.4); text-decoration: none; }
+    footer a:hover { color: var(--red); }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">SmartIQ by Hart</a>
+      <span class="nav-sub">Down Payment Calculator</span>
+    </div>
+  </nav>
+
+  <!-- Hero image via Unsplash (free, no attribution required) -->
+  <img
+    class="hero-img"
+    src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=1200&q=80&auto=format&fit=crop"
+    alt="A well-kept home exterior representing a real estate purchase"
+  />
+
+  <main>
+    <div class="card">
+      <p class="card-eyebrow">SmartIQ Tool</p>
+      <h1>Down Payment Calculator</h1>
+      <p class="subtitle">Enter a purchase price and choose your down payment percentage to see how much you will need to bring to the table before closing.</p>
+
+      <!-- Purchase Price -->
+      <div class="field">
+        <label for="price">Purchase Price</label>
+        <input type="text" id="price" placeholder="e.g. 325,000" inputmode="numeric" />
+      </div>
+
+      <!-- Down Payment % -->
+      <div class="field">
+        <label for="pct">Down Payment Percentage</label>
+        <input type="number" id="pct" placeholder="e.g. 10" min="0" max="100" step="0.5" />
+        <div class="pct-pills">
+          <span class="pill" data-val="3">3%</span>
+          <span class="pill" data-val="3.5">3.5%</span>
+          <span class="pill" data-val="5">5%</span>
+          <span class="pill" data-val="10">10%</span>
+          <span class="pill" data-val="15">15%</span>
+          <span class="pill" data-val="20">20%</span>
+          <span class="pill" data-val="25">25%</span>
+        </div>
+      </div>
+
+      <button class="btn-calc" onclick="calculate()">Calculate Down Payment</button>
+
+      <!-- Result Panel -->
+      <div class="result" id="result">
+        <div class="result-label">Estimated Down Payment</div>
+        <div class="result-amount" id="res-amount">—</div>
+        <div class="result-rows">
+          <div class="result-row">
+            <div class="r-label">Purchase Price</div>
+            <div class="r-value" id="res-price">—</div>
+          </div>
+          <div class="result-row">
+            <div class="r-label">Down Payment %</div>
+            <div class="r-value" id="res-pct">—</div>
+          </div>
+          <div class="result-row">
+            <div class="r-label">Loan Amount</div>
+            <div class="r-value" id="res-loan">—</div>
+          </div>
+          <div class="result-row">
+            <div class="r-label">Remaining to Finance</div>
+            <div class="r-value" id="res-remain">—</div>
+          </div>
+        </div>
+        <p class="result-note">
+          This is a starting-point estimate only. Your actual down payment will depend on your loan type, lender requirements, and program eligibility. Talk with Kelvin at <a href="tel:13178338419">317.833.8419</a> for next steps.
+        </p>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    SmartIQ by Hart &nbsp;·&nbsp; Kelvin Hart, Realtor® — Fathom Realty Indiana &nbsp;·&nbsp;
+    <a href="tel:13178338419">317.833.8419</a> &nbsp;·&nbsp;
+    <a href="https://kelvinhart.fathomrealty.com">kelvinhart.fathomrealty.com</a><br/>
+    This tool is for educational purposes only and does not constitute financial or lending advice.
+  </footer>
+
+  <script>
+    const fmt = (n) => '$' + Math.round(n).toLocaleString('en-US');
+
+    // Format price input with commas as user types
+    document.getElementById('price').addEventListener('input', function () {
+      const raw = this.value.replace(/[^0-9]/g, '');
+      this.value = raw ? Number(raw).toLocaleString('en-US') : '';
+    });
+
+    // Percentage pills
+    document.querySelectorAll('.pill').forEach(pill => {
+      pill.addEventListener('click', function () {
+        document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+        this.classList.add('active');
+        document.getElementById('pct').value = this.dataset.val;
+      });
+    });
+
+    // Sync pill active state when user types in the % field
+    document.getElementById('pct').addEventListener('input', function () {
+      const val = parseFloat(this.value);
+      document.querySelectorAll('.pill').forEach(p => {
+        p.classList.toggle('active', parseFloat(p.dataset.val) === val);
+      });
+    });
+
+    function calculate() {
+      const rawPrice = document.getElementById('price').value.replace(/[^0-9.]/g, '');
+      const pct      = parseFloat(document.getElementById('pct').value);
+      const price    = parseFloat(rawPrice);
+      const result   = document.getElementById('result');
+
+      if (!rawPrice || isNaN(price) || price <= 0) {
+        alert('Please enter a valid purchase price.');
+        return;
+      }
+      if (isNaN(pct) || pct < 0 || pct > 100) {
+        alert('Please enter a down payment percentage between 0 and 100.');
+        return;
+      }
+
+      const down   = price * (pct / 100);
+      const loan   = price - down;
+
+      document.getElementById('res-amount').textContent  = fmt(down);
+      document.getElementById('res-price').textContent   = fmt(price);
+      document.getElementById('res-pct').textContent     = pct + '%';
+      document.getElementById('res-loan').textContent    = fmt(loan);
+      document.getElementById('res-remain').textContent  = fmt(loan);
+
+      result.classList.add('show');
+      result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // Allow Enter key to trigger calculation
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') calculate();
+    });
+  </script>
+
+</body>
+</html>
