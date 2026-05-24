@@ -570,6 +570,141 @@
       }
     }
 
+  
+
+  
+    /* Final refined hero button sizing */
+    .hero-actions {
+      gap: 9px !important;
+    }
+    .hero-actions .btn,
+    .hero-actions button,
+    .hero-actions a {
+      padding: 10px 15px !important;
+      font-size: .86rem !important;
+      line-height: 1 !important;
+      min-height: auto !important;
+      border-radius: 999px !important;
+      white-space: nowrap !important;
+      letter-spacing: -.005em !important;
+    }
+    @media (max-width: 780px) {
+      .hero-actions {
+        gap: 7px !important;
+      }
+      .hero-actions .btn,
+      .hero-actions button,
+      .hero-actions a {
+        padding: 8px 11px !important;
+        font-size: .76rem !important;
+      }
+    }
+    @media (max-width: 430px) {
+      .hero-actions {
+        gap: 6px !important;
+      }
+      .hero-actions .btn,
+      .hero-actions button,
+      .hero-actions a {
+        padding: 8px 10px !important;
+        font-size: .74rem !important;
+      }
+    }
+
+  
+
+  
+
+  
+    /* Safer calculator section top alignment */
+    .calculator-layout,
+    .scenario-intro {
+      align-items: flex-start !important;
+    }
+
+    @media (min-width: 781px) {
+      .scenario-intro {
+        padding-top: 28px !important;
+        padding-bottom: 28px !important;
+      }
+
+      .scenario-intro > * {
+        align-self: flex-start !important;
+      }
+
+      .scenario-intro h2 {
+        margin-top: 0 !important;
+      }
+
+      .mini-calculator {
+        margin-top: 0 !important;
+        align-self: flex-start !important;
+      }
+    }
+
+    @media (min-width: 781px) and (max-width: 1280px) {
+      .scenario-intro {
+        padding-top: 18px !important;
+        padding-bottom: 24px !important;
+      }
+    }
+
+  
+    .section-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 10px;
+      color: var(--red);
+      font-size: .72rem;
+      font-weight: 850;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+    .section-eyebrow::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--red);
+      display: inline-block;
+    }
+    @media (max-width: 780px) {
+      .section-eyebrow {
+        font-size: .66rem;
+        margin-bottom: 8px;
+      }
+    }
+
+  
+    /* Refine calculator preview alignment */
+    @media (min-width: 781px) {
+      .section-eyebrow {
+        margin-bottom: 12px !important;
+      }
+
+      .section-eyebrow + h2 {
+        margin-top: 0 !important;
+      }
+
+      .scenario-intro > :first-child,
+      .calculator-layout > :first-child {
+        transform: translateY(-14px);
+      }
+
+      .scenario-intro > :last-child,
+      .calculator-layout > :last-child {
+        transform: translateY(0);
+      }
+    }
+
+    @media (min-width: 781px) and (max-width: 1280px) {
+      .scenario-intro > :first-child,
+      .calculator-layout > :first-child {
+        transform: translateY(-18px);
+      }
+    }
+
   </style>
   <meta property="og:url" content="http://calculator.smartiqbyhart.com/" />
   <link rel="canonical" href="https://calculator.smartiqbyhart.com/" />
@@ -608,6 +743,7 @@
     <section class="tool-card" id="table">
       <div class="tool-header">
         <div>
+          <div class="section-eyebrow">Calculator preview</div>
           <h2>Down payment calculator and scenarios</h2>
           <p>
             The table uses simple math: purchase price × down payment percentage.
@@ -648,7 +784,7 @@
 
         <div class="note-grid" id="downPaymentNote">
           <div class="note">
-            <strong>What this helps with:</strong> This gives buyers a quick visual for the cash needed at different price points. A lender can help confirm what down payment range fits the loan type, credit profile, monthly payment comfort, and available programs.
+            <strong class="helps-red">What this helps with:</strong> This gives buyers a quick visual for the cash needed at different price points. A lender can help confirm what down payment range fits the loan type, credit profile, monthly payment comfort, and available programs.
           </div>
           <div class="contact-card">
             <div>
