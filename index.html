@@ -1528,6 +1528,99 @@
       }
     }
 
+
+    /* Header dropdown/link repair */
+    .top,
+    .top * {
+      box-sizing: border-box;
+    }
+
+    .top a,
+    .top button {
+      pointer-events: auto !important;
+    }
+
+    .nav-dropdown {
+      position: relative !important;
+    }
+
+    .nav-drop-trigger {
+      position: relative !important;
+      z-index: 152 !important;
+      pointer-events: auto !important;
+    }
+
+    .nav-drop-menu {
+      display: grid !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      transform: translateY(6px) !important;
+      z-index: 300 !important;
+    }
+
+    .nav-dropdown:hover .nav-drop-menu,
+    .nav-dropdown:focus-within .nav-drop-menu,
+    .nav-dropdown.is-open .nav-drop-menu {
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+      transform: translateY(0) !important;
+    }
+
+    .nav-drop-menu a,
+    .contact-options a,
+    .nav-links a {
+      pointer-events: auto !important;
+      position: relative !important;
+      z-index: 301 !important;
+      cursor: pointer !important;
+    }
+
+    .nav-dropdown.is-open .nav-drop-trigger,
+    .nav-dropdown:hover .nav-drop-trigger {
+      color: #c40000 !important;
+    }
+
+    .contact-options {
+      z-index: 305 !important;
+    }
+
+    .contact-options.is-open {
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+      transform: translateY(0) !important;
+    }
+
+    @media (max-width: 900px) {
+      .mobile-menu.is-open {
+        display: grid !important;
+        z-index: 304 !important;
+      }
+
+      .mobile-menu a {
+        pointer-events: auto !important;
+        position: relative !important;
+        z-index: 305 !important;
+      }
+
+      .mobile-menu .mobile-start-link {
+        background: #111827 !important;
+        color: #ffffff !important;
+        border: 1px solid #111827 !important;
+        min-height: 44px !important;
+      }
+
+      .mobile-menu .mobile-start-link:hover,
+      .mobile-menu .mobile-start-link:focus,
+      .mobile-menu .mobile-start-link:focus-visible {
+        background: #ffffff !important;
+        color: #c40000 !important;
+        border-color: rgba(196,0,0,.18) !important;
+      }
+    }
+
 </style>
   <meta property="og:url" content="http://calculator.smartiqbyhart.com/" />
   <link rel="canonical" href="https://calculator.smartiqbyhart.com/" />
@@ -1687,11 +1780,11 @@
               <small>Realtor® | Broker · Fathom Realty Indiana</small>
             </div>
             <div class="contact-links">
-              <a href="tel:13178338419">Call</a>
-              <a href="sms:13178338419">Text</a>
+              <a href="tel:+13178338419">Call</a>
+              <a href="sms:+13178338419">Text</a>
               <a href="mailto:khart@fathomrealty.com">Email</a>
-              <a href="http://smartiqbyhart.com/" target="_blank" rel="noopener">Website</a>
-              <a href="http://affordabilityiq.smartiqbyhart.com/" target="_blank" rel="noopener">AffordabilityIQ</a>
+              <a href="http://smartiqbyhart.com/">Website</a>
+              <a href="http://affordabilityiq.smartiqbyhart.com/">AffordabilityIQ</a>
             </div>
           </div>
         </div>
@@ -1778,58 +1871,126 @@
   </script>
 
 
+  <!-- Link audit:
+       Header same-page landing anchors were changed for calculator subdomain:
+       Start Here -> http://smartiqbyhart.com/#tools
+       Meet Kelvin -> http://smartiqbyhart.com/#about
+       Testimonials -> http://smartiqbyhart.com/#testimonials
+       Internal calculator anchors preserved: #table, #top, #tableStart
+  -->
+
+
   <script>
-    (function(){
+    (function () {
+      const dropdowns = Array.from(document.querySelectorAll('.nav-dropdown'));
+
+      function closeDropdowns(except) {
+        dropdowns.forEach(function (drop) {
+          if (drop !== except) {
+            drop.classList.remove('is-open');
+            const trigger = drop.querySelector('.nav-drop-trigger');
+            if (trigger) trigger.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+
+      dropdowns.forEach(function (drop) {
+        const trigger = drop.querySelector('.nav-drop-trigger');
+        const menu = drop.querySelector('.nav-drop-menu');
+        if (!trigger || !menu) return;
+
+        trigger.addEventListener('click', function (event) {
+          event.preventDefault();
+          event.stopPropagation();
+          const willOpen = !drop.classList.contains('is-open');
+          closeDropdowns(drop);
+          drop.classList.toggle('is-open', willOpen);
+          trigger.setAttribute('aria-expanded', String(willOpen));
+        });
+
+        menu.querySelectorAll('a').forEach(function (link) {
+          link.addEventListener('click', function () {
+            drop.classList.remove('is-open');
+            trigger.setAttribute('aria-expanded', 'false');
+          });
+        });
+
+        drop.addEventListener('mouseleave', function () {
+          drop.classList.remove('is-open');
+          trigger.setAttribute('aria-expanded', 'false');
+        });
+      });
+
       const contactToggle = document.querySelector('[data-contact-toggle]');
       const contactOptions = document.querySelector('[data-contact-options]');
-      if(contactToggle && contactOptions){
-        contactToggle.addEventListener('click', function(e){
-          e.stopPropagation();
+      if (contactToggle && contactOptions) {
+        contactToggle.addEventListener('click', function (event) {
+          event.preventDefault();
+          event.stopPropagation();
+          closeDropdowns();
           const isOpen = contactOptions.classList.toggle('is-open');
           contactToggle.setAttribute('aria-expanded', String(isOpen));
         });
-        document.addEventListener('click', function(e){
-          if(!contactToggle.contains(e.target) && !contactOptions.contains(e.target)){
+
+        contactOptions.querySelectorAll('a').forEach(function (link) {
+          link.addEventListener('click', function () {
             contactOptions.classList.remove('is-open');
             contactToggle.setAttribute('aria-expanded', 'false');
-          }
-        });
-        document.addEventListener('keydown', function(e){
-          if(e.key === 'Escape'){
-            contactOptions.classList.remove('is-open');
-            contactToggle.setAttribute('aria-expanded', 'false');
-          }
+          });
         });
       }
 
       const mobileToggle = document.querySelector('[data-mobile-menu-toggle]');
       const mobileMenu = document.querySelector('[data-mobile-menu]');
-      if(mobileToggle && mobileMenu){
-        mobileToggle.addEventListener('click', function(){
+      if (mobileToggle && mobileMenu) {
+        mobileToggle.addEventListener('click', function () {
           const isOpen = mobileMenu.classList.toggle('is-open');
           mobileToggle.classList.toggle('is-open', isOpen);
           mobileToggle.setAttribute('aria-expanded', String(isOpen));
           mobileToggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
         });
 
-        mobileMenu.querySelectorAll('a').forEach(function(link){
-          link.addEventListener('click', function(){
+        mobileMenu.querySelectorAll('a').forEach(function (link) {
+          link.addEventListener('click', function () {
             mobileMenu.classList.remove('is-open');
             mobileToggle.classList.remove('is-open');
             mobileToggle.setAttribute('aria-expanded', 'false');
             mobileToggle.setAttribute('aria-label', 'Open menu');
           });
         });
+      }
 
-        document.addEventListener('keydown', function(e){
-          if(e.key === 'Escape'){
+      document.addEventListener('click', function (event) {
+        if (!event.target.closest('.nav-dropdown')) {
+          closeDropdowns();
+        }
+
+        if (
+          contactToggle &&
+          contactOptions &&
+          !event.target.closest('[data-contact-toggle]') &&
+          !event.target.closest('[data-contact-options]')
+        ) {
+          contactOptions.classList.remove('is-open');
+          contactToggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+          closeDropdowns();
+          if (contactToggle && contactOptions) {
+            contactOptions.classList.remove('is-open');
+            contactToggle.setAttribute('aria-expanded', 'false');
+          }
+          if (mobileToggle && mobileMenu) {
             mobileMenu.classList.remove('is-open');
             mobileToggle.classList.remove('is-open');
             mobileToggle.setAttribute('aria-expanded', 'false');
             mobileToggle.setAttribute('aria-label', 'Open menu');
           }
-        });
-      }
+        }
+      });
     })();
   </script>
 
