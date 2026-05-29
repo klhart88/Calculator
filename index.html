@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <link rel="icon" type="image/png" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" href="/favicon-32x32.png" />
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Down Payment Cheat Sheet | SmartIQ by Hart</title>
@@ -1406,6 +1406,33 @@ header.top .smartiq-lockup .lockup-tagline {
   font-family: "Montserrat", "Avenir Next", "Gotham", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
 }
 
+
+/* Back to top button: black with white arrow */
+.floating-top-btn,
+.back-to-top,
+a[href="#top"].floating-top-btn,
+button.floating-top-btn {
+  background: #111214 !important;
+  color: #ffffff !important;
+  border-color: #111214 !important;
+}
+
+.floating-top-btn svg,
+.back-to-top svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+  fill: none !important;
+}
+
+.floating-top-btn:hover,
+.floating-top-btn:focus,
+.back-to-top:hover,
+.back-to-top:focus {
+  background: #111214 !important;
+  color: #ffffff !important;
+  border-color: #111214 !important;
+}
+
 </style>
   <meta property="og:url" content="http://calculator.smartiqbyhart.com/" />
   <link rel="canonical" href="https://calculator.smartiqbyhart.com/" />
@@ -1439,7 +1466,7 @@ header.top .smartiq-lockup .lockup-tagline {
 </div>
 <a href="http://smartiqbyhart.com/#about">Meet Kelvin</a>
 <a href="http://smartiqbyhart.com/#testimonials">Testimonials</a>
-<a href="https://kelvinhart.fathomrealty.com/">Home Search</a>
+<a href="https://kelvinhart.fathomrealty.com/property-search/any/status=active,viewport=40.098659:-85.779579_39.576687:-86.452491">Home Search</a>
 <div class="header-contact-menu">
 <button aria-expanded="false" aria-haspopup="true" class="header-contact" data-contact-toggle="" type="button">Contact Kelvin</button>
 <div class="contact-options" data-contact-options="">
@@ -1467,7 +1494,7 @@ header.top .smartiq-lockup .lockup-tagline {
 </button>
 <div class="mobile-menu" data-mobile-menu="" id="mobile-menu">
 <a class="mobile-start-link" href="http://smartiqbyhart.com/#tools">Start Here</a>
-<a class="mobile-home-search-link" href="https://kelvinhart.fathomrealty.com/">Home Search</a>
+<a class="mobile-home-search-link" href="https://kelvinhart.fathomrealty.com/property-search/any/status=active,viewport=40.098659:-85.779579_39.576687:-86.452491">Home Search</a>
 <div class="mobile-menu-group">
 <div class="mobile-menu-heading">Tools</div>
 <a href="http://affordabilityiq.smartiqbyhart.com/">AffordabilityIQ</a>
@@ -1565,7 +1592,6 @@ header.top .smartiq-lockup .lockup-tagline {
               <a href="tel:+13178338419">Call</a>
               <a href="sms:+13178338419">Text</a>
               <a href="mailto:khart@fathomrealty.com">Email</a>
-              <a href="http://smartiqbyhart.com/" target="_blank" rel="noopener">Website</a>
               <a href="http://affordabilityiq.smartiqbyhart.com/" target="_blank" rel="noopener">AffordabilityIQ</a>
             </div>
           </div>
@@ -1754,6 +1780,11 @@ header.top .smartiq-lockup .lockup-tagline {
     });
   })();
 </script>
+<!-- ═══════════════════════════════════════════════════════════════
+     STEP 1 — Paste inside <head>
+     All CSS variables are resolved to literal values so this works
+     in any site without the AffordabilityIQ stylesheet.
+     ═══════════════════════════════════════════════════════════════ -->
 <style>
   /* ── Chatbot button pulse ──────────────────────────────────────── */
   @keyframes chatPulse {
