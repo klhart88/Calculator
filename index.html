@@ -768,65 +768,6 @@
 
   
     /* Floating back to top button */
-    .floating-top-btn {
-      position: fixed;
-      right: 22px;
-      bottom: 24px;
-      z-index: 50;
-      width: 42px;
-      height: 42px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      color: var(--ink);
-      background: rgba(255,255,255,.94);
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      font-size: 1.05rem;
-      font-weight: 850;
-      line-height: 1;
-      box-shadow: 0 10px 28px rgba(20,20,20,.12);
-      backdrop-filter: blur(8px);
-    }
-
-    .floating-top-btn:hover {
-      color: var(--red);
-      border-color: rgba(196,0,0,.24);
-      transform: translateY(-1px);
-    }
-
-    @media (max-width: 780px) {
-      .floating-top-btn {
-        right: 16px;
-        bottom: 18px;
-        width: 38px;
-        height: 38px;
-        font-size: .98rem;
-      }
-    }
-
-    @media print {
-      .floating-top-btn {
-        display: none !important;
-      }
-    }
-
-  
-    /* Floating back to top visibility */
-    .floating-top-btn {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
-      transition: opacity .22s ease, visibility .22s ease, transform .22s ease;
-    }
-
-    .floating-top-btn.is-hidden {
-      opacity: 0 !important;
-      visibility: hidden !important;
-      pointer-events: none !important;
-      transform: translateY(8px) !important;
-    }
 
   
 
@@ -1407,30 +1348,62 @@ header.top .smartiq-lockup .lockup-tagline {
 }
 
 
-/* Back to top button: black with white arrow */
-.floating-top-btn,
-.back-to-top,
-a[href="#top"].floating-top-btn,
-button.floating-top-btn {
-  background: #111214 !important;
-  color: #ffffff !important;
-  border-color: #111214 !important;
+/* Final mobile back-to-top button style and visibility */
+.mobile-back-top{
+  opacity:0;
+  pointer-events:none;
+  transform:translateY(10px);
 }
-
-.floating-top-btn svg,
-.back-to-top svg {
-  color: #ffffff !important;
-  stroke: #ffffff !important;
-  fill: none !important;
+.mobile-back-top.is-visible{
+  opacity:1;
+  pointer-events:auto;
+  transform:translateY(0);
 }
-
-.floating-top-btn:hover,
-.floating-top-btn:focus,
-.back-to-top:hover,
-.back-to-top:focus {
-  background: #111214 !important;
-  color: #ffffff !important;
-  border-color: #111214 !important;
+@media(max-width:760px){
+  .mobile-back-top,
+  [data-back-top]{
+    position:fixed !important;
+    left:22px !important;
+    right:auto !important;
+    bottom:22px !important;
+    width:50px !important;
+    height:50px !important;
+    min-width:50px !important;
+    min-height:50px !important;
+    padding:0 !important;
+    border-radius:999px !important;
+    border:1px solid rgba(17,24,39,.10) !important;
+    background:#ffffff !important;
+    color:#c40000 !important;
+    box-shadow:0 14px 30px rgba(17,24,39,.16) !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    gap:0 !important;
+    z-index:90 !important;
+    font-size:0 !important;
+    line-height:0 !important;
+    transition:opacity .22s ease, transform .22s ease !important;
+  }
+  .mobile-back-top span,
+  [data-back-top] span{
+    display:none !important;
+  }
+  .mobile-back-top::before,
+  [data-back-top]::before{
+    content:"" !important;
+    display:block !important;
+    width:13px !important;
+    height:13px !important;
+    border-top:3px solid #c40000 !important;
+    border-left:3px solid #c40000 !important;
+    transform:rotate(45deg) translate(2px,2px) !important;
+  }
+}
+@media(min-width:761px){
+  .mobile-back-top{
+    display:none !important;
+  }
 }
 
 </style>
@@ -1660,23 +1633,10 @@ button.floating-top-btn {
     updateCalculator();
   </script>
 
-  <a class="floating-top-btn is-hidden" href="#top" aria-label="Back to top">↑</a>
-
-
-  <script>
-    (function () {
-      const topButton = document.querySelector('.floating-top-btn');
-      if (!topButton) return;
-
-      function updateTopButton() {
-        const shouldShow = window.scrollY > 500;
-        topButton.classList.toggle('is-hidden', !shouldShow);
-      }
-
-      updateTopButton();
-      window.addEventListener('scroll', updateTopButton, { passive: true });
-    })();
-  </script>
+  <button class="mobile-back-top" type="button" aria-label="Back to top" data-back-top>
+    <span aria-hidden="true">↑</span>
+    <span>Top</span>
+  </button>
 
 
 <script>
@@ -1780,6 +1740,27 @@ button.floating-top-btn {
     });
   })();
 </script>
+<script>
+    (function(){
+      const backTop = document.querySelector("[data-back-top]");
+      if(!backTop) return;
+
+      function updateBackTop(){
+        const shouldShow = window.scrollY > 650;
+        backTop.classList.toggle("is-visible", shouldShow);
+      }
+
+      backTop.addEventListener("click", function(){
+        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+      });
+
+      window.addEventListener("scroll", updateBackTop, { passive: true });
+      window.addEventListener("resize", updateBackTop);
+      updateBackTop();
+    })();
+  </script>
 <!-- ═══════════════════════════════════════════════════════════════
      STEP 1 — Paste inside <head>
      All CSS variables are resolved to literal values so this works
